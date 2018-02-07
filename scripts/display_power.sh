@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+tmux_session=$( tmux display-message -p '#S' )
+if [[ $tmux_session != 'fullscreen' && $tmux_session != 'remote' ]]; then
+	exit 0
+fi
+
 power_info=$( pmset -g batt | grep InternalBattery | tail -n 1 )
 
 if [[ -z $power_info ]]; then
