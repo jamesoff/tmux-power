@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 
-# Check if we're on the corp wifi
-power_info=$( pmset -g batt | tail -n1 )
+power_info=$( pmset -g batt | grep InternalBattery | tail -n 1 )
+
+if [[ -z $power_info ]]; then
+	exit 0
+fi
 
 # -InternalBattery-0 (id=5046371)        41%; charging; 2:38 remaining present: true
 #-InternalBattery-0 (id=5046371)        42%; discharging; (no estimate) present: true
-state="$( echo "$power_info" | cut -d\; -f2 )"
-percent="$( echo "$power_info" | cut -d\; -f1 | cut -f2 | tr -d '%' )"
+state="$( echo -n "$power_info" | cut -d\; -f2 | tr -d ' ' )"
+percent="$( echo -n "$power_info" | cut -d\; -f1 | cut -f2 | tr -d '%' )"
 
 if [[ $percent -lt 30 ]]; then
 	battery_colour='196'
@@ -14,13 +17,16 @@ if [[ $percent -lt 30 ]]; then
 elif [[ $percent -lt 70 ]]; then
 	battery_colour='226'
 	battery_icon='  '
-elif [[ $percent -lt 90 ]]; then
-	battery_colour='22'
+else
+	battery_colour='70'
 	battery_icon='  '
 fi
 
 if [[ $state == "charging" ]]; then
 	battery_colour='31'
+	if [[ $percent -eq 100 ]]; then
+		battery_icon='  '
+	fi
 fi
 
-echo "#[fg=$battery_colour]$battery_icon"
+echo "#[fg=colour$battery_colour]$battery_icon"
