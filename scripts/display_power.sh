@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [[ $(uname) != 'Darwin' ]]; then
+	# currently only supports macOS
+	exit 0
+fi
+
 tmux_session=$( tmux display-message -p '#S' )
 if [[ $tmux_session != 'fullscreen' && $tmux_session != 'remote' ]]; then
 	exit 0
