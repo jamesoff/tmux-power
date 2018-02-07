@@ -29,9 +29,10 @@ fi
 
 if [[ $state == "charging" ]]; then
 	battery_colour='31'
-	if [[ $percent -eq 100 ]]; then
-		battery_icon='  '
-	fi
+fi
+
+if [[ $percent -eq 100 && $state == "charged" ]]; then
+	battery_icon='  '
 fi
 
 echo "#[fg=colour$battery_colour]$battery_icon"
