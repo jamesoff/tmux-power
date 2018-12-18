@@ -23,13 +23,13 @@ percent="$( echo -n "$power_info" | cut -d\; -f1 | cut -f2 | tr -d '%' )"
 
 if [[ $percent -lt 30 ]]; then
 	battery_colour='196'
-	battery_icon=''
+	battery_icon=' '
 elif [[ $percent -lt 70 ]]; then
 	battery_colour='226'
-	battery_icon=''
+	battery_icon=' '
 else
 	battery_colour='70'
-	battery_icon=''
+	battery_icon=' '
 fi
 
 if [[ $state == "charging" ]]; then
